@@ -4,7 +4,8 @@ import {getPostsService} from "../services/post.service.ts";
 const PostsList2 = () => {
     const postsQuery = useQuery({
         queryKey: ["posts"],
-        queryFn: () => getPostsService()
+        queryFn: () => getPostsService(),
+        refetchInterval: 1000,
     });
 
     if (postsQuery.status === "loading") return <h1>Loading...</h1>
