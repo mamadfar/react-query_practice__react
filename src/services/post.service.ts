@@ -9,7 +9,7 @@ export const getPostService = (id: number): Promise<IPost> => {
 };
 
 export const createPostService = ({title, body}: {title: string, body: string}) => {
-    return API.post("/posts", {
+    return API.post<IPost>("/posts", {
         title,
         body,
         userId: 1,

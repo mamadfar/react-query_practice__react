@@ -10,7 +10,7 @@ const App = () => {
             <button onClick={() => setCurrentPage(<PostsList1/>)}>Posts List 1</button>
             <button onClick={() => setCurrentPage(<PostsList2/>)}>Posts List 2</button>
             <button onClick={() => setCurrentPage(<Post id={1}/>)}>First Post</button>
-            <button onClick={() => setCurrentPage(<CreatePost/>)}>New Post</button>
+            <button onClick={() => setCurrentPage(<CreatePost setCurrentPage={setCurrentPage}/>)}>New Post</button>
             <br/>
             {currentPage}
         </main>

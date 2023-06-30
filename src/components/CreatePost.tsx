@@ -1,21 +1,31 @@
-import {FormEvent, useRef} from 'react';
-import {useMutation} from "@tanstack/react-query";
+import {FC, FormEvent, useRef} from 'react';
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {createPostService} from "../services/post.service.ts";
+import Post from "./Post.tsx";
 
-const CreatePost = () => {
+const CreatePost:FC<{setCurrentPage: (currentPage: JSX.Element) => void}> = ({setCurrentPage}) => {
 
     const titleRef = useRef<HTMLInputElement | null>(null);
     const bodyRef = useRef<HTMLInputElement | null>(null);
 
+    const queryClient = useQueryClient();
+
     const createPostMutation = useMutation({
-        mutationFn: createPostService
+        mutationFn: createPostService,
+        onSuccess: (data) => {
+            queryClient.setQueryData(["posts", data.id], data);
+            setCurrentPage(<Post id={data.id}/>);
+            queryClient.invalidateQueries(["posts"], {
+                exact: true,
+            });
+        },
     });
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         createPostMutation.mutate({
             title: titleRef.current?.value as string,
-            body: titleRef.current?.value as string,
+            body: bodyRef.current?.value as string,
         })
     }
 
